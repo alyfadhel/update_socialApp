@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:new_social_app/models/SocialUserModel.dart';
-
-
-
 class ChatDetailsScreen extends StatelessWidget {
   final SocialUserModel? userModel;
   const ChatDetailsScreen({this.userModel,Key? key}) : super(key: key);
