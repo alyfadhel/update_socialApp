@@ -302,6 +302,7 @@ class SocialCubit extends Cubit<SocialStates> {
 
   List<PostModel> posts = [];
   List<String> postId = [];
+  List<int> likes = [];
 
   void getPosts({
      String? dateTime,
@@ -315,8 +316,16 @@ class SocialCubit extends Cubit<SocialStates> {
         .get()
         .then((value) {
       value.docs.forEach((element) {
-        postId.add(element.id);
-        posts.add(PostModel.fromJson(element.data()));
+        element.reference
+        .collection('likes')
+        .get()
+        .then((value)
+        {
+          likes.add(value.docs.length);
+          postId.add(element.id);
+          posts.add(PostModel.fromJson(element.data()));
+        })
+        .catchError((error) {});
       });
      // updatePost();
       emit(SocialGetPostsSuccessState());
