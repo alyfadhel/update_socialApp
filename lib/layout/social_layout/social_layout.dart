@@ -56,7 +56,6 @@ class SocialLayout extends StatelessWidget {
           ),
           drawer: Drawer(
             width: 250.0,
-
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -77,6 +76,7 @@ class SocialLayout extends StatelessWidget {
             },
             items: cubit.items,
           ),
+
           body: cubit.screens[cubit.currentIndex],
         );
       },

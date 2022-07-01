@@ -315,7 +315,8 @@ class FeedsScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: InkWell(
-                      onTap: () {},
+                      onTap: ()
+                      {},
                       child: Row(
                         children: [
                            CircleAvatar(

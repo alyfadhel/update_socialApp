@@ -71,6 +71,9 @@ class SocialCubit extends Cubit<SocialStates> {
   ];
 
   changeBottomNav(int index) {
+    if (index == 1) {
+      getAllUsers();
+    }
     if (index == 2) {
       emit(SocialAddPost());
     } else {
@@ -129,7 +132,10 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialUserUpdateLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
+        .child('users/${Uri
+        .file(profileImage!.path)
+        .pathSegments
+        .last}')
         .putFile(profileImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -157,7 +163,10 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialUserUpdateLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri.file(coverImage!.path).pathSegments.last}')
+        .child('users/${Uri
+        .file(coverImage!.path)
+        .pathSegments
+        .last}')
         .putFile(coverImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -250,7 +259,10 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialCreatePostLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
+        .child('posts/${Uri
+        .file(postImage!.path)
+        .pathSegments
+        .last}')
         .putFile(postImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -292,7 +304,6 @@ class SocialCubit extends Cubit<SocialStates> {
         phone: userModel!.phone!,
         bio: userModel!.bio!,
       );
-
     }).catchError((error) {
       emit(SocialCreatePostErrorState());
     });
@@ -305,58 +316,58 @@ class SocialCubit extends Cubit<SocialStates> {
   List<int> likes = [];
 
   void getPosts({
-     String? dateTime,
-     String? text,
+    String? dateTime,
+    String? text,
   }) {
     emit(SocialGetPostsLoadingState());
 
-    FirebaseFirestore
-        .instance
-        .collection('posts')
-        .get()
-        .then((value) {
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
       value.docs.forEach((element) {
-        element.reference
-        .collection('likes')
-        .get()
-        .then((value)
-        {
+        element.reference.collection('likes').get().then((value) {
           likes.add(value.docs.length);
           postId.add(element.id);
           posts.add(PostModel.fromJson(element.data()));
-        })
-        .catchError((error) {});
+        }).catchError((error) {});
       });
-     // updatePost();
+      // updatePost();
       emit(SocialGetPostsSuccessState());
     }).catchError((error) {
       emit(SocialGetPostsErrorState(error.toString()));
     });
   }
 
-
-
-  void likePost(String postId)
-  {
+  void likePost(String postId) {
     FirebaseFirestore.instance
         .collection('posts')
         .doc(postId)
         .collection('likes')
         .doc(userModel!.uId)
         .set({
-      'like' : true,
-    })
-        .then((value)
-    {
+      'like': true,
+    }).then((value) {
       emit(SocialLikePostSuccessState());
-    })
-        .catchError((error)
-    {
+    }).catchError((error) {
       emit(SocialLikePostErrorState(error.toString()));
     });
   }
 
+  List<SocialUserModel> users = [];
 
+  void getAllUsers() {
+    if (users.isEmpty) {
+      FirebaseFirestore.instance.collection('users').get().then((value) {
+        value.docs.forEach((element) {
 
-
+          if(element.data()['uId'] != userModel!.uId)
+          {
+            users.add(SocialUserModel.fromJson(element.data()));
+          }
+        });
+        // updatePost();
+        emit(SocialGetAllUserSuccessState());
+      }).catchError((error) {
+        emit(SocialGetAllUserErrorState(error.toString()));
+      });
+    }
+  }
 }
