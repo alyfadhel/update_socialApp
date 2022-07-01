@@ -15,7 +15,7 @@ class FeedsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          condition: SocialCubit.get(context).posts.isNotEmpty,
+          condition: SocialCubit.get(context).posts.isNotEmpty && SocialCubit.get(context).userModel != null,
           builder: (context) => SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
@@ -56,6 +56,7 @@ class FeedsScreen extends StatelessWidget {
                   itemBuilder: (context, index) => buildPostItem(
                     SocialCubit.get(context).posts[index],
                     context,
+                    index,
                   ),
                   separatorBuilder: (context, index) => const SizedBox(
                     height: 15.0,
@@ -78,6 +79,7 @@ class FeedsScreen extends StatelessWidget {
   Widget buildPostItem(
     PostModel model,
     context,
+    index,
   ) =>
       Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -337,7 +339,10 @@ class FeedsScreen extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: ()
+                    {
+                      SocialCubit.get(context).likePost(SocialCubit.get(context).postId[index]);
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
