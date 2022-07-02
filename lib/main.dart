@@ -14,14 +14,23 @@ import 'package:new_social_app/shared/styles/cubit/observer.dart';
 import 'package:new_social_app/shared/styles/cubit/states.dart';
 import 'package:new_social_app/shared/styles/themes.dart';
 
+//foreground fcm
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async
+{
+  print(message.data.toString());
+
+  showToast(text: 'On Background Message', state: ToastState.success);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // when app is opened to sent message notification
+  // when click on notification to open app
   var token = await FirebaseMessaging.instance.getToken();
   print(token);
 
+  //background fcm
   FirebaseMessaging.onMessage.listen((event) {
     print(event.data.toString());
 
@@ -35,6 +44,8 @@ void main() async {
   });
 
 
+
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   await CacheHelper.init();
   bool? isDark = CacheHelper.getData(key: 'isDark');

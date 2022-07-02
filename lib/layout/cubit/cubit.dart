@@ -1,14 +1,17 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:new_social_app/compontents/compontents.dart';
 import 'package:new_social_app/compontents/constantse.dart';
 import 'package:new_social_app/layout/cubit/states.dart';
 import 'package:new_social_app/models/MessageModel.dart';
 import 'package:new_social_app/models/PostModel.dart';
 import 'package:new_social_app/models/SocialUserModel.dart';
 import 'package:new_social_app/modules/add_post/add_posts-screen.dart';
+import 'package:new_social_app/modules/chat_details/chat_details_screen.dart';
 import 'package:new_social_app/modules/chats/chats_screen.dart';
 import 'package:new_social_app/modules/feeds/feeds_screen.dart';
 import 'package:new_social_app/modules/profile/profile_screen.dart';
@@ -434,7 +437,4 @@ class SocialCubit extends Cubit<SocialStates> {
         emit(SocialGetMessagesSuccessState());
     });
   }
-
-
-
 }
