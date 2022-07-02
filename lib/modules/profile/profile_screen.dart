@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_social_app/compontents/compontents.dart';
@@ -211,6 +212,35 @@ class ProfileScreen extends StatelessWidget {
                             signOut(context);
                           },
                           child: const Icon(Iconly_Broken.Logout),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                  Row(
+                    children:
+                    [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: ()
+                          {
+                            FirebaseMessaging.instance.subscribeToTopic('announcements');
+                          },
+                          child: const Text(
+                            'Subscribe',
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: ()
+                          {
+                            FirebaseMessaging.instance.unsubscribeFromTopic('announcements');
+                          },
+                          child: const Text(
+                            'Unsubscribe',
+                          ),
                         ),
                       ),
                     ],

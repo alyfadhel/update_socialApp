@@ -68,7 +68,7 @@ class AddPostsScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        'Ali Fadel Hassan',
+                        SocialCubit.get(context).userModel!.name!,
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1!

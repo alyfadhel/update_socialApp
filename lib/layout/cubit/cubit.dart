@@ -92,8 +92,8 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialGetUserDataLoadingState());
     FirebaseFirestore.instance.collection('users').doc(uId).snapshots()
         .listen((value) {
-      //userModel = null;
-      userModel = SocialUserModel.fromJson(value.data()!);
+      userModel = null;
+      userModel = SocialUserModel.fromJson(value.data());
       //print(value.data());
       emit(SocialGetUserDataSuccessState());
     });
