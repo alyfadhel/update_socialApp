@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:new_social_app/compontents/compontents.dart';
 import 'package:new_social_app/compontents/constantse.dart';
 import 'package:new_social_app/layout/cubit/cubit.dart';
 import 'package:new_social_app/layout/social_layout/social_layout.dart';
@@ -15,6 +17,25 @@ import 'package:new_social_app/shared/styles/themes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // when app is opened to sent message notification
+  var token = await FirebaseMessaging.instance.getToken();
+  print(token);
+
+  FirebaseMessaging.onMessage.listen((event) {
+    print(event.data.toString());
+
+    showToast(text: 'On Message', state: ToastState.success);
+  });
+  
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    print(event.data.toString());
+
+    showToast(text: 'On Message Opened App', state: ToastState.success);
+  });
+
+
+
   await CacheHelper.init();
   bool? isDark = CacheHelper.getData(key: 'isDark');
   bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
