@@ -15,7 +15,7 @@ class FeedsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          condition: SocialCubit.get(context).posts.isNotEmpty && SocialCubit.get(context).likes.isNotEmpty && SocialCubit.get(context).userModel != null,
+          condition: SocialCubit.get(context).posts.isNotEmpty ,
           builder: (context) => SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(

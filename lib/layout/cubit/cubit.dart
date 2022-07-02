@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_social_app/compontents/constantse.dart';
 import 'package:new_social_app/layout/cubit/states.dart';
+import 'package:new_social_app/models/MessageModel.dart';
 import 'package:new_social_app/models/PostModel.dart';
 import 'package:new_social_app/models/SocialUserModel.dart';
 import 'package:new_social_app/modules/add_post/add_posts-screen.dart';
@@ -88,7 +89,7 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialGetUserDataLoadingState());
     FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
       //userModel = null;
-      userModel = SocialUserModel.fromJson(value.data());
+      userModel = SocialUserModel.fromJson(value.data()!);
       //print(value.data());
       emit(SocialGetUserDataSuccessState());
     }).catchError((error) {
@@ -370,4 +371,50 @@ class SocialCubit extends Cubit<SocialStates> {
       });
     }
   }
+
+  void sendMessage({
+    required String receiverId,
+    required String dateTime,
+    required String text,
+})
+  {
+    MessageModel model = MessageModel(
+      receiverId: receiverId,
+      senderId: userModel!.uId,
+      dateTime: dateTime,
+      text: text,
+    );
+    FirebaseFirestore.instance.collection('users')
+    .doc(userModel!.uId)
+    .collection('chats')
+    .doc(receiverId)
+    .collection('messages')
+    .add(model.toMap())
+    .then((value)
+    {
+      emit(SocialSendMessageSuccessState());
+    })
+    .catchError((error)
+    {
+      emit(SocialSendMessageErrorState());
+    });
+
+    FirebaseFirestore.instance.collection('users')
+        .doc(receiverId)
+        .collection('chats')
+        .doc(userModel!.uId)
+        .collection('messages')
+        .add(model.toMap())
+        .then((value)
+    {
+      emit(SocialSendMessageSuccessState());
+    })
+        .catchError((error)
+    {
+      emit(SocialSendMessageErrorState());
+    });
+
+  }
+
+
 }

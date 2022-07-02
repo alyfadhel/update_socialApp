@@ -20,15 +20,15 @@ class SocialUserModel
        required this.bio,
       });
 
-  SocialUserModel.fromJson(Map<String,dynamic>?json)
+  SocialUserModel.fromJson(Map<String,dynamic>json)
   {
-    name = json?['name'];
-    email = json?['email'];
-    phone = json?['phone'];
-    uId = json?['uId'];
-    cover = json?['cover'];
-    image = json?['image'];
-    bio = json?['bio'];
+    name = json['name'];
+    email = json['email'];
+    phone = json['phone'];
+    uId = json['uId'];
+    cover = json['cover'];
+    image = json['image'];
+    bio = json['bio'];
 
   }
 
